@@ -22,11 +22,11 @@ export function ChatMessage({ content, timestamp, isCurrentUser, username, userI
 
   return (
     <div className="flex mb-4">
-      <Avatar className="h-8 w-8 mr-2 bg-[#1e293b] text-white">
+      <Avatar className="h-8 w-8 mr-2 bg-[#1e293b] text-white flex items-center justify-center">
         <span className="text-sm">{userInitials}</span>
       </Avatar>
       <div className="flex flex-col">
-        <div className="bg-[#1e293b] text-white rounded-lg py-2 px-4 max-w-[70%]">
+        <div className="bg-[#1e293b] text-white rounded-lg py-2 px-4 max-w-[300px]">
           <p className="font-semibold mb-1">{username}</p>
           <p>{content}</p>
         </div>

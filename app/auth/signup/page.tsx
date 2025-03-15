@@ -1,35 +1,33 @@
 'use client'
 
 import { ICreateUser } from "@/@types/@user"
-import { errorTypes } from "@/common/lib/error-types"
-import { createUser } from "@/common/services/create-user"
+import useUserAuthentication from "@/common/hooks/use-user-authentication"
+import { useUserCreation } from "@/common/hooks/use-user-creation"
+
 import { SignupForm } from "@/components/auth/signup-form"
 import { BlueArenaLogo } from "@/components/BlueArenaLogo"
 import { Footer } from "@/components/Footer"
-import toast from "react-hot-toast";
+import { useRouter } from "next/navigation"
 
 export default function SignupPage() {
-  const handleSubmit = ({ name, email, password, username }: ICreateUser) => {
-    const promise = createUser({
-      name,
-      email,
-      password,
-      username
-    });
+  const { execUserCreation } = useUserCreation();
+  const { execUserAuthentication } = useUserAuthentication();
 
-    promise
-      .then(result => {
-        console.log(result)
+  const { replace } = useRouter();
 
-        switch(result) {
-          case errorTypes._500.user_nc:
-            toast.error('It was not possible to create your account, please try again or contact support.');
-            break;
-        }
+  const handleSubmit = async ({ name, email, password, username }: ICreateUser) => {
+    const retrUserCreation = await execUserCreation({ name, email, password, username });
+
+    if (retrUserCreation && retrUserCreation.id) {
+      const retrUserAuthentication = await execUserAuthentication({
+        username,
+        password
       })
-      .catch((result) => {
-        toast.error('Ocorreu um erro ao criar o usuário');
-      })
+
+      if (retrUserAuthentication) {
+        replace("/ma/matches");
+      }
+    }
   }
 
   return (

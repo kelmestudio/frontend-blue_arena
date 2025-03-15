@@ -4,3 +4,13 @@ export interface ICreateUser {
     username: string;
     password: string;
 }
+
+export interface IAuthenticateUser {
+    username: string;
+    password: string;
+}
+
+export interface IMeUser {
+    token: string,
+    session: string;
+}

@@ -5,16 +5,19 @@ import Link from "next/link"
 import { BlueArenaLogoSmall } from "./BlueArenaLogoSmall"
 import { Avatar } from "./ui/avatar"
 import { Menu, X } from "lucide-react"
+import { useUser } from "./providers/user-provider"
+import { displayInitials, displayName } from "@/common/lib/utils"
 
-const navigation = [
-  { name: "Home", href: "/" },
-  { name: "Matches", href: "/matches" },
-  { name: "About us", href: "/about" },
-  { name: "FAQ", href: "/faq" },
+const navigation: { name: string, href: string }[] = [
+  // { name: "Home", href: "/" },
+  // { name: "Matches", href: "/matches" },
+  // { name: "About us", href: "/about" },
+  // { name: "FAQ", href: "/faq" },
 ]
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const userData = useUser();
 
   return (
     <header className="w-full bg-background py-4">
@@ -34,9 +37,8 @@ export function Header() {
         </div>
 
         <nav
-          className={`${
-            isMenuOpen ? "block" : "hidden"
-          } md:block absolute md:relative top-16 md:top-0 left-0 right-0 bg-background md:bg-transparent`}
+          className={`${isMenuOpen ? "block" : "hidden"
+            } md:block absolute md:relative top-16 md:top-0 left-0 right-0 bg-background md:bg-transparent`}
         >
           <ul className="flex flex-col md:flex-row md:items-center md:space-x-8 space-y-4 md:space-y-0 py-4 md:py-0 px-[24px] md:px-0">
             {navigation.map((item) => (
@@ -54,10 +56,14 @@ export function Header() {
         </nav>
 
         <div className="hidden md:flex items-center gap-3">
-          <Avatar className="h-8 w-8 bg-[#1e293b] text-white">
-            <span className="text-sm">JG</span>
+          <Avatar className="h-8 w-8 bg-[#1e293b] text-white flex items-center justify-center font-bold">
+            <span className="text-sm">{displayInitials(userData.username)}</span>
           </Avatar>
-          <span className="text-gray-300">jorge_99_gamer</span>
+          <span className="text-gray-300 font-medium">
+            {
+              displayName(userData.username)
+            }
+          </span>
         </div>
       </div>
     </header>

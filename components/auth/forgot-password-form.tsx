@@ -8,7 +8,7 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { PasswordResetSuccessModal } from "@/components/modals/PasswordResetSuccessModal"
+import { NewMatchModal } from "../modals/new-match-modal"
 
 const forgotPasswordSchema = z.object({
   email: z.string().email({ message: "Invalid email address" }),
@@ -30,8 +30,6 @@ export function ForgotPasswordForm() {
 
   async function onSubmit(data: ForgotPasswordFormValues) {
     setIsLoading(true)
-    // Add your password reset logic here
-    console.log(data)
     setTimeout(() => {
       setIsLoading(false)
       setShowSuccessPopup(true)
@@ -82,7 +80,7 @@ export function ForgotPasswordForm() {
         </div>
       </div>
 
-      <PasswordResetSuccessModal isOpen={showSuccessPopup} onClose={() => setShowSuccessPopup(false)} />
+      <NewMatchModal isOpen={showSuccessPopup} onClose={() => setShowSuccessPopup(false)} />
     </>
   )
 }

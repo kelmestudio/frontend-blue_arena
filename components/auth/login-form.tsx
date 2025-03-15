@@ -9,19 +9,18 @@ import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { useRouter } from "next/navigation"
+import { IAuthenticateUser } from "@/@types/@user"
 
 const loginSchema = z.object({
-  email: z.string().email({ message: "Invalid email address" }),
+  username: z.string().min(3, { message: "Username must be at least 3 characters long" }),
   password: z.string().min(8, { message: "Password must be at least 8 characters long" }),
-  rememberMe: z.boolean().optional(),
+  // rememberMe: z.boolean().optional(),
 })
 
 type LoginFormValues = z.infer<typeof loginSchema>
 
-export function LoginForm() {
+export function LoginForm({ onSubmit }: { onSubmit: (data: IAuthenticateUser) => void }) {
   const [isLoading, setIsLoading] = useState(false)
-  const router = useRouter()
 
   const {
     register,
@@ -30,16 +29,6 @@ export function LoginForm() {
   } = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
   })
-
-  async function onSubmit(data: LoginFormValues) {
-    setIsLoading(true)
-    // Add your login logic here
-    console.log(data)
-    setTimeout(() => {
-      setIsLoading(false)
-      router.push("/matches")
-    }, 3000)
-  }
 
   return (
     <div className="w-full max-w-md bg-[#0F172A]/50 p-[30px] rounded-[24px] border border-solid border-[#1E293B]">
@@ -58,19 +47,18 @@ export function LoginForm() {
           <div className="space-y-4">
             <div className="relative">
               <Input
-                id="email"
-                {...register("email")}
-                type="email"
-                className={`h-[62px] bg-[#1e293b] border-[#374151] text-white pt-7 ${
-                  errors.email ? "border-red-500" : ""
-                }`}
-                placeholder="Your email address"
+                id="username"
+                {...register("username")}
+                type="text"
+                className={`h-[62px] bg-[#1e293b] border-[#374151] text-white pt-7 ${errors.username ? "border-red-500" : ""
+                  }`}
+                placeholder="Choose a username"
                 disabled={isLoading}
               />
-              <Label htmlFor="email" className="absolute left-3 top-2 text-xs text-gray-400">
-                Email address
+              <Label htmlFor="username" className="absolute left-3 top-2 text-xs text-gray-400">
+                Username
               </Label>
-              {errors.email && <p className="mt-1 text-xs text-red-500">{errors.email.message}</p>}
+              {errors.username && <p className="mt-1 text-xs text-red-500">{errors.username.message}</p>}
             </div>
 
             <div className="relative">
@@ -78,9 +66,8 @@ export function LoginForm() {
                 id="password"
                 {...register("password")}
                 type="password"
-                className={`h-[62px] bg-[#1e293b] border-[#374151] text-white pt-7 ${
-                  errors.password ? "border-red-500" : ""
-                }`}
+                className={`h-[62px] bg-[#1e293b] border-[#374151] text-white pt-7 ${errors.password ? "border-red-500" : ""
+                  }`}
                 placeholder="At least 8 characters"
                 disabled={isLoading}
               />
@@ -92,7 +79,7 @@ export function LoginForm() {
           </div>
 
           <div className="flex items-center justify-between">
-            <div className="flex items-center">
+            {/* <div className="flex items-center">
               <Checkbox
                 id="remember-me"
                 {...register("rememberMe")}
@@ -102,7 +89,7 @@ export function LoginForm() {
               <Label htmlFor="remember-me" className="ml-2 text-sm text-gray-400">
                 Remember me
               </Label>
-            </div>
+            </div> */}
 
             <div className="text-sm">
               <Link href="/auth/forgot-password" className="text-blue-500 hover:text-blue-400">

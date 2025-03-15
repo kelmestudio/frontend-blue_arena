@@ -93,3 +93,24 @@ body {
   }
 }
 
+.chat-messages {
+  @apply scrollbar-thin scrollbar-thumb-[#1e293b] scrollbar-track-transparent;
+  
+  /* Custom scrollbar styles */
+  scrollbar-width: thin;
+  scrollbar-color: #1e293b transparent;
+  
+  /* Webkit scrollbar styles */
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background-color: #1e293b;
+    border-radius: 3px;
+  }
+}
